@@ -48,7 +48,7 @@
   <app-modal [heading]="modalTitles[modal]" (closed)="modal = null">
     @if (modal === 'propose' && detail) {
       <app-change-request-form
-        [target]="detail"
+        [dataType]="detail.dataType"
         [busy]="busy"
         [error]="error"
         (submitted)="proposeChange($event)"

@@ -1,6 +1,5 @@
 import { Component, input, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ProposalTarget } from '../../models/change-request';
 import { ChangeRequestFormValue, emptyChangeRequestForm } from '../../models/change-request-form';
 
 /** Form to propose a value change, deactivation or reactivation of a parameter. */
@@ -10,7 +9,7 @@ import { ChangeRequestFormValue, emptyChangeRequestForm } from '../../models/cha
   templateUrl: './change-request-form.html',
 })
 export class ChangeRequestForm {
-  readonly target = input.required<ProposalTarget>();
+  readonly dataType = input.required<string>();
   readonly busy = input(false);
   readonly error = input('');
 

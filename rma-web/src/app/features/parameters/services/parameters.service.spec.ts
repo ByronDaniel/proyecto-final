@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { API_URL } from '../../../shared/http/api';
+import { Parameter } from '../models/parameter';
 import { emptyParameterForm } from '../models/parameter-form';
 import { ParametersService } from './parameters.service';
 
@@ -71,6 +72,29 @@ describe('ParametersService', () => {
       .flush({ items: [{ versionNumber: 2 }], page: { page: 1, size: 100, totalElements: 101, totalPages: 2 } });
 
     expect((await history).map((version) => version.versionNumber)).toEqual([1, 2]);
+  });
+
+  describe('baseVersionNumber', () => {
+    const parameter = { id: 'parameter-id' } as Parameter;
+    const url = `${API_URL}/parameters/parameter-id/versions`;
+
+    it('uses the current version without calling the API', async () => {
+      expect(await service.baseVersionNumber({ ...parameter, currentVersionNumber: 4 })).toBe(4);
+    });
+
+    it('falls back to the latest published version', async () => {
+      const base = service.baseVersionNumber({ ...parameter, currentVersionNumber: null });
+      const request = backend.expectOne((r) => r.url === url);
+      expect(request.request.params.get('size')).toBe('1');
+      request.flush({ items: [{ versionNumber: 7 }], page: { page: 0, size: 1, totalElements: 7, totalPages: 7 } });
+      expect(await base).toBe(7);
+    });
+
+    it('is null when nothing was published', async () => {
+      const base = service.baseVersionNumber({ ...parameter, currentVersionNumber: null });
+      backend.expectOne((r) => r.url === url).flush({ items: [], page: { page: 0, size: 1, totalElements: 0, totalPages: 0 } });
+      expect(await base).toBeNull();
+    });
   });
 
   it('updates only the editable metadata with the ETag', () => {

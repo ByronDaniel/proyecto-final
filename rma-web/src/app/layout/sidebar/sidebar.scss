@@ -5,6 +5,7 @@
 
 .sidebar {
   flex: 0 0 236px;
+  overflow-y: auto;
   background: #153f36;
   color: #e6f0eb;
   padding: 28px 16px;
@@ -94,6 +95,8 @@ nav a.active {
 
 @media (max-width: 760px) {
   .sidebar {
+    flex: none;
+    overflow-y: visible;
     padding: 14px 16px;
   }
 

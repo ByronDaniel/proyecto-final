@@ -10,12 +10,12 @@ describe('ChangeRequestsService', () => {
     TestBed.configureTestingModule({ providers: [provideHttpClient(), provideHttpClientTesting()] });
   });
 
-  it('submits boolean values and the last published base version', () => {
+  it('submits boolean values and the given base version', () => {
     const service = TestBed.inject(ChangeRequestsService);
     const backend = TestBed.inject(HttpTestingController);
-    const form = { ...emptyChangeRequestForm(), proposedValue: 'false', baseVersionNumber: 3, reason: 'Change the setting' };
+    const form = { ...emptyChangeRequestForm(), proposedValue: 'false', reason: 'Change the setting' };
 
-    service.create({ id: 'parameter-id', dataType: 'BOOLEAN', currentVersionNumber: null }, form, 'key-1');
+    service.create({ id: 'parameter-id', dataType: 'BOOLEAN', baseVersionNumber: 3 }, form, 'key-1');
 
     const request = backend.expectOne(`${API_URL}/change-requests`);
     expect(request.request.method).toBe('POST');

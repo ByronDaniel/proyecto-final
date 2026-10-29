@@ -36,8 +36,7 @@ export class ChangeRequestsService {
       changeType: form.changeType,
       reason: form.reason,
     };
-    if (target.currentVersionNumber) body['baseVersionNumber'] = target.currentVersionNumber;
-    else if (form.baseVersionNumber) body['baseVersionNumber'] = Number(form.baseVersionNumber);
+    if (target.baseVersionNumber) body['baseVersionNumber'] = target.baseVersionNumber;
     if (form.effectiveFrom) body['effectiveFrom'] = new Date(form.effectiveFrom).toISOString();
     if (form.effectiveTo) body['effectiveTo'] = new Date(form.effectiveTo).toISOString();
     if (form.changeType === 'SET_VALUE') body['proposedValue'] = parseValue(target.dataType, form.proposedValue);

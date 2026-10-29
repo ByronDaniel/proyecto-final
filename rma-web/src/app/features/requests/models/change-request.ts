@@ -36,7 +36,8 @@ export interface ApprovalDecision {
 export interface ProposalTarget {
   id: string;
   dataType: string;
-  currentVersionNumber?: number | null;
+  /** Version the change is based on; required by the API once the parameter has published versions. */
+  baseVersionNumber?: number | null;
 }
 
 export interface ChangeRequestFilter {

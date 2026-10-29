@@ -11,7 +11,7 @@
   @if (form.changeType === 'SET_VALUE') {
     <label>
       Valor propuesto
-      @switch (target().dataType) {
+      @switch (dataType()) {
         @case ('BOOLEAN') {
           <select name="proposedValue" [(ngModel)]="form.proposedValue" required>
             <option value="" disabled>Seleccionar</option>
@@ -26,18 +26,11 @@
           <input
             name="proposedValue"
             [(ngModel)]="form.proposedValue"
-            [type]="target().dataType === 'DATE' ? 'date' : 'text'"
+            [type]="dataType() === 'DATE' ? 'date' : 'text'"
             required
           />
         }
       }
-    </label>
-  }
-
-  @if (!target().currentVersionNumber) {
-    <label>
-      <span>Última versión publicada <small class="optional">(opcional)</small></span>
-      <input type="number" min="1" step="1" name="baseVersionNumber" [(ngModel)]="form.baseVersionNumber" />
     </label>
   }
 

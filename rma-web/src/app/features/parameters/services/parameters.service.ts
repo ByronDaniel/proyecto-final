@@ -24,6 +24,19 @@ export class ParametersService {
     );
   }
 
+  /**
+   * Version a new change request must be based on, following the API rule: the current version,
+   * or else the latest published one (first in the history). `null` if nothing was ever published.
+   */
+  async baseVersionNumber(parameter: Parameter): Promise<number | null> {
+    if (parameter.currentVersionNumber) return parameter.currentVersionNumber;
+    const params = queryParams({ page: 0, size: 1 });
+    const latest = await firstValueFrom(
+      this.http.get<Page<ParameterVersion>>(`${PARAMETERS_URL}/${parameter.id}/versions`, { params }),
+    );
+    return latest.items[0]?.versionNumber ?? null;
+  }
+
   /** Full version history ordered by approval date, newest first. Fetches every page. */
   async versions(id: string): Promise<ParameterVersion[]> {
     const versions: ParameterVersion[] = [];

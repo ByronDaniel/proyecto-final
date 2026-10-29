@@ -2,8 +2,10 @@
   <app-sidebar [items]="navItems()" />
   <main class="workspace">
     <app-topbar [heading]="title()" />
-    <div class="content">
-      <router-outlet />
+    <div class="scroll-area">
+      <div class="content">
+        <router-outlet />
+      </div>
     </div>
   </main>
 </div>

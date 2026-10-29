@@ -127,7 +127,11 @@ export class ParametersPage {
   }
 
   proposeChange(form: ChangeRequestFormValue) {
-    return this.submit(() => this.changeRequests.create(this.detail!, form, this.idempotencyKey));
+    const { id, dataType } = this.detail!;
+    return this.submit(async () => {
+      const baseVersionNumber = await this.parameters.baseVersionNumber(this.detail!);
+      return this.changeRequests.create({ id, dataType, baseVersionNumber }, form, this.idempotencyKey);
+    });
   }
 
   async retire() {
