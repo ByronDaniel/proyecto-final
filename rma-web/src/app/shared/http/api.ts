@@ -1,4 +1,4 @@
-import { HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
+import { HttpHeaders, HttpParameterCodec, HttpParams, HttpResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 
 export const API_URL = environment.apiUrl;
@@ -16,9 +16,20 @@ export interface WriteOptions {
   idempotencyKey?: string;
 }
 
+/**
+ * Encodes every reserved character. Angular's default codec leaves `:` and `,` raw,
+ * which the API's contract validation rejects (e.g. in ISO date-times).
+ */
+const strictEncoder: HttpParameterCodec = {
+  encodeKey: encodeURIComponent,
+  encodeValue: encodeURIComponent,
+  decodeKey: decodeURIComponent,
+  decodeValue: decodeURIComponent,
+};
+
 /** Builds the query string, skipping empty filters. */
 export function queryParams(query: Record<string, string | number | undefined>): HttpParams {
-  let params = new HttpParams();
+  let params = new HttpParams({ encoder: strictEncoder });
   for (const [key, value] of Object.entries(query)) {
     if (value !== undefined && value !== '') params = params.set(key, value);
   }
