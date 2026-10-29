@@ -8,7 +8,7 @@ import argon2 from 'argon2';
 import request from 'supertest';
 import { MongoMemoryReplSet } from 'mongodb-memory-server';
 import { connectMongo } from '../src/infrastructure/mongo.js';
-import { createApp } from '../src/interfaces/app.js';
+import { createApp } from '../src/app.js';
 
 test('HTTP maker-checker flow, security, and idempotency', async () => {
   const replica = await MongoMemoryReplSet.create({ replSet: { count: 1 } });

@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { assertDecision, etag, requireMatch, validateConstraints, validateRequest, validateValue } from '../src/domain/rules.js';
+import { etag, requireMatch } from '../src/shared/etag.js';
+import { validateConstraints, validateValue } from '../src/modules/parameters/parameter.rules.js';
+import { assertDecision, validateRequest } from '../src/modules/change-requests/change-request.rules.js';
 
 test('validates types, dates and value constraints', () => {
   validateValue('MONEY', '15000.00', { min: 0, max: 20000 });

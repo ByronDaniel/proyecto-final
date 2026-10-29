@@ -30,6 +30,10 @@ export class MongoRepository {
   async update(filter, update) {
     return this.collection.updateOne(filter, update, { session: this.session });
   }
+
+  async replace(filter, document) {
+    return this.collection.replaceOne(filter, document, { session: this.session });
+  }
 }
 
 export class MongoStore {
