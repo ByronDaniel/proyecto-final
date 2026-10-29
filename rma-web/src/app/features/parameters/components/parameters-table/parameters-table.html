@@ -4,7 +4,7 @@
       <th>CÓDIGO</th>
       <th>NOMBRE</th>
       <th>DOMINIO</th>
-      <th>TIPO</th>
+      <th>VALOR ACTUAL</th>
       <th>ESTADO</th>
       <th></th>
     </tr>
@@ -15,9 +15,18 @@
         <td class="code">{{ row.code }}</td>
         <td>{{ row.name }}</td>
         <td>{{ row.businessDomain }}</td>
-        <td>{{ row.dataType }}</td>
-        <td><span class="badge">{{ row.status }}</span></td>
-        <td><button class="text-button" (click)="viewDetail.emit(row)">Ver detalle →</button></td>
+        <td class="value">
+          {{ row.currentValue | displayValue }} @if (row.currentValue != null) { {{ row.unit }} }
+        </td>
+        <td><span class="badge {{ row.status | statusTone }}">{{ row.status }}</span></td>
+        <td>
+          <div class="row-actions">
+            <button class="secondary compact" (click)="viewHistory.emit(row)">
+              <svg lucideHistory [size]="14"></svg> Ver historial
+            </button>
+            <button class="text-button" (click)="viewDetail.emit(row)">Ver detalle →</button>
+          </div>
+        </td>
       </tr>
     }
   </tbody>

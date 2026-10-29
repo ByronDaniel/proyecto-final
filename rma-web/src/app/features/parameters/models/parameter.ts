@@ -29,6 +29,8 @@ export interface Parameter {
   constraints?: ParameterConstraints;
   status: ParameterStatus;
   currentVersionNumber?: number | null;
+  /** Value of the current version. Only sent by the list endpoint. */
+  currentValue?: unknown;
   createdAt: string;
   createdBy: string;
   updatedAt?: string;

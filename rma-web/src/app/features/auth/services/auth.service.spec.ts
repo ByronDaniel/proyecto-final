@@ -1,6 +1,7 @@
 import { TestBed, fakeAsync, flushMicrotasks, tick } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { API_URL } from '../../../shared/http/api';
 import { AuthService } from './auth.service';
 
 describe('AuthService', () => {
@@ -14,7 +15,7 @@ describe('AuthService', () => {
     const auth = TestBed.inject(AuthService);
     const http = TestBed.inject(HttpTestingController);
     auth.login('maker', 'test-password');
-    http.expectOne('/api/v1/auth/token').flush({ accessToken: 'test-token', roles: ['MAKER'], expiresIn: 1 });
+    http.expectOne(`${API_URL}/auth/token`).flush({ accessToken: 'test-token', roles: ['MAKER'], expiresIn: 1 });
     flushMicrotasks();
     expect(auth.session()?.username).toBe('maker');
     tick(1000);

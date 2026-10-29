@@ -23,8 +23,16 @@
   (searchRequested)="search()"
   (pageChange)="goToPage($event)"
 >
-  <app-parameters-table [rows]="rows" (viewDetail)="show($event)" />
+  <app-parameters-table [rows]="rows" (viewDetail)="show($event)" (viewHistory)="showHistory($event)" />
 </app-data-section>
+
+@if (history) {
+  <app-parameter-history
+    [parameter]="history.parameter"
+    [versions]="history.versions"
+    (closed)="history = null"
+  />
+}
 
 @if (detail && !modal) {
   <app-parameter-detail

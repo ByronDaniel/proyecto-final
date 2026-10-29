@@ -1,7 +1,7 @@
 <form #formRef="ngForm" (ngSubmit)="formRef.valid && submitted.emit(text)">
   @if (kind() === 'approval') {
     <label>
-      Comentario
+      <span>Comentario <small class="optional">(opcional)</small></span>
       <textarea name="comment" [(ngModel)]="text" maxlength="500"></textarea>
     </label>
   } @else {

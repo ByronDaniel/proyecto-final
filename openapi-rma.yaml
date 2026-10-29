@@ -103,7 +103,8 @@ paths:
       operationId: listParameters
       summary: Listar definiciones de parámetros
       description: |
-        Colección administrativa paginada. No devuelve el valor vigente (use `/parameter-values`).
+        Colección administrativa paginada. Cada elemento incluye `currentValue`, el valor de su versión
+        vigente, cuando existe.
         **Roles:** MAKER, CHECKER, ADMIN, AUDITOR.
       x-required-roles: [MAKER, CHECKER, ADMIN, AUDITOR]
       security:
@@ -307,6 +308,39 @@ paths:
         "409": { $ref: "#/components/responses/Conflict" }
         "412": { $ref: "#/components/responses/PreconditionFailed" }
         "428": { $ref: "#/components/responses/PreconditionRequired" }
+        "429": { $ref: "#/components/responses/TooManyRequests" }
+        "500": { $ref: "#/components/responses/InternalError" }
+        "503": { $ref: "#/components/responses/ServiceUnavailable" }
+  /api/v1/parameters/{parameterId}/versions:
+    parameters:
+      - $ref: "#/components/parameters/ParameterId"
+      - $ref: "#/components/parameters/Authorization"
+      - $ref: "#/components/parameters/CorrelationId"
+    get:
+      tags: [Parameters]
+      operationId: listParameterVersions
+      summary: Listar el historial de versiones de un parámetro
+      description: |
+        Versiones publicadas del parámetro (vigente, programadas y expiradas), ordenadas por fecha de
+        aprobación descendente (la más reciente primero). **Roles:** MAKER, CHECKER, ADMIN, AUDITOR.
+      x-required-roles: [MAKER, CHECKER, ADMIN, AUDITOR]
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/Size"
+      responses:
+        "200":
+          description: Página de versiones del parámetro.
+          headers:
+            X-Correlation-Id: { $ref: "#/components/headers/CorrelationId" }
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ParameterVersionPage" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
         "429": { $ref: "#/components/responses/TooManyRequests" }
         "500": { $ref: "#/components/responses/InternalError" }
         "503": { $ref: "#/components/responses/ServiceUnavailable" }
@@ -1171,6 +1205,12 @@ components:
           type: [integer, "null"]
           minimum: 1
           description: Referencia informativa a la versión vigente; `null` si no hay ninguna.
+        currentValue:
+          $ref: "#/components/schemas/ParameterValue"
+          description: |
+            Valor de la versión vigente (`currentVersionNumber`). Solo se incluye en el listado
+            (`GET /parameters`); se omite si no hay versión vigente o si esta es una desactivación.
+            No forma parte del recurso ni de su `ETag`.
         createdAt: { type: string, format: date-time }
         createdBy: { type: string, maxLength: 128 }
         updatedAt: { type: string, format: date-time }

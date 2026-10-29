@@ -1,0 +1,20 @@
+<app-detail-drawer eyebrow="HISTORIAL" [heading]="parameter().code" (closed)="closed.emit()">
+  @for (version of versions(); track version.versionNumber) {
+    <button type="button" class="version" (click)="selected = version">
+      <span class="version-heading">
+        <strong>Versión {{ version.versionNumber }}</strong>
+        <span class="badge {{ version.status | statusTone }}">{{ version.status }}</span>
+      </span>
+      <span class="value">
+        {{ version.value | displayValue }} @if (version.value != null) { {{ parameter().unit }} }
+      </span>
+      <span class="meta">{{ version.changeType }} · Aprobada {{ version.approvedAt | date: 'short' }}</span>
+    </button>
+  } @empty {
+    <div class="empty">Este parámetro no tiene versiones publicadas.</div>
+  }
+</app-detail-drawer>
+
+@if (selected) {
+  <app-parameter-version-detail [version]="selected" [unit]="parameter().unit" (closed)="selected = null" />
+}

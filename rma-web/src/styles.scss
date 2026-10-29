@@ -45,6 +45,13 @@ label {
   margin-bottom: 15px;
 }
 
+/* Marks fields the API contract does not require: <span>Label <small class="optional">(opcional)</small></span> */
+.optional {
+  color: #8b9b93;
+  font-size: 11px;
+  font-weight: 400;
+}
+
 input,
 select,
 textarea {
@@ -110,6 +117,17 @@ textarea {
 
 .secondary:hover {
   background: #f0f5f2;
+}
+
+/* Smaller secondary button for table rows; the negative margin keeps the row height. */
+.secondary.compact {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 0;
+  margin: -6px 0;
+  padding: 6px 10px;
+  font-size: 12px;
 }
 
 .danger {
@@ -188,6 +206,13 @@ td.code {
   font-size: 10px;
   font-weight: 700;
 }
+
+/* Status colors, assigned by the statusTone pipe */
+.badge.tone-success { color: #286e57; background: #e7f2e8; }
+.badge.tone-info { color: #2f5f8a; background: #e6eef7; }
+.badge.tone-warning { color: #8b5a24; background: #f8eedf; }
+.badge.tone-neutral { color: #66766f; background: #edf1ee; }
+.badge.tone-danger { color: #9c3a33; background: #fcebea; }
 
 /* Overlays (detail drawer and modal) */
 

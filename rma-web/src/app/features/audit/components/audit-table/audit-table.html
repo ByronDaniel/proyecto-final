@@ -14,7 +14,7 @@
       <tr>
         <td class="code">{{ row.operation }}</td>
         <td>{{ row.actor.id }}</td>
-        <td><span class="badge">{{ row.outcome }}</span></td>
+        <td><span class="badge {{ row.outcome | statusTone }}">{{ row.outcome }}</span></td>
         <td>{{ row.occurredAt | date: 'short' }}</td>
         <td>{{ row.correlationId }}</td>
         <td><button class="text-button" (click)="viewDetail.emit(row)">Ver detalle →</button></td>

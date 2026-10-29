@@ -3,6 +3,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { Router, provideRouter } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
+import { API_URL } from './shared/http/api';
 import { App } from './app';
 import { routes } from './app.routes';
 import { authInterceptor } from './features/auth/interceptors/auth.interceptor';
@@ -46,7 +47,7 @@ describe('App', () => {
     storeSession(['CONSUMER']);
     await RouterTestingHarness.create('/');
     expect(TestBed.inject(Router).url).toBe('/values');
-    TestBed.inject(HttpTestingController).expectOne((request) => request.url === '/api/v1/parameter-values').flush(emptyPage);
+    TestBed.inject(HttpTestingController).expectOne((request) => request.url === `${API_URL}/parameter-values`).flush(emptyPage);
   });
 
   it('redirects pages the user is not allowed to open', async () => {
@@ -59,7 +60,7 @@ describe('App', () => {
     storeSession(['MAKER']);
     const harness = await RouterTestingHarness.create('/');
     expect(TestBed.inject(Router).url).toBe('/parameters');
-    TestBed.inject(HttpTestingController).expectOne((request) => request.url === '/api/v1/parameters').flush(emptyPage);
+    TestBed.inject(HttpTestingController).expectOne((request) => request.url === `${API_URL}/parameters`).flush(emptyPage);
 
     TestBed.inject(AuthService).logout();
     harness.detectChanges();

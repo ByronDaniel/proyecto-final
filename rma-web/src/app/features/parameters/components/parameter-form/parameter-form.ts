@@ -6,6 +6,7 @@ import { ParameterFormValue, emptyParameterForm, parameterFormFrom } from '../..
 /**
  * Creates a parameter, or edits the metadata of `parameter` when given.
  * Code, data type and scope are immutable, so they are only shown on creation.
+ * Constraints are only shown when editing.
  */
 @Component({
   selector: 'app-parameter-form',

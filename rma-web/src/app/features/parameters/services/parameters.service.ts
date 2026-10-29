@@ -1,10 +1,11 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
-import { API_URL, PAGE_SIZE, WithEtag, queryParams, withEtag, writeHeaders } from '../../../shared/http/api';
+import { API_URL, MAX_PAGE_SIZE, PAGE_SIZE, WithEtag, queryParams, withEtag, writeHeaders } from '../../../shared/http/api';
 import { Page } from '../../../shared/models/page';
 import { Parameter, ParameterConstraints, ParameterFilter, Scope } from '../models/parameter';
 import { ParameterFormValue } from '../models/parameter-form';
+import { ParameterVersion } from '../models/parameter-version';
 
 const PARAMETERS_URL = `${API_URL}/parameters`;
 
@@ -23,11 +24,23 @@ export class ParametersService {
     );
   }
 
+  /** Full version history ordered by approval date, newest first. Fetches every page. */
+  async versions(id: string): Promise<ParameterVersion[]> {
+    const versions: ParameterVersion[] = [];
+    for (let page = 0; ; page++) {
+      const params = queryParams({ page, size: MAX_PAGE_SIZE });
+      const result = await firstValueFrom(
+        this.http.get<Page<ParameterVersion>>(`${PARAMETERS_URL}/${id}/versions`, { params }),
+      );
+      versions.push(...result.items);
+      if (page + 1 >= result.page.totalPages) return versions;
+    }
+  }
+
+  /** Constraints are not set on creation; they can be added later by editing the metadata. */
   create(form: ParameterFormValue, idempotencyKey: string): Promise<Parameter> {
-    const body: Record<string, unknown> = {
-      ...withoutEmpty({ code: form.code, dataType: form.dataType }),
-      ...metadataBody(form),
-    };
+    const { code, dataType, name, category, businessDomain, description, unit } = form;
+    const body: Record<string, unknown> = withoutEmpty({ code, dataType, name, category, businessDomain, description, unit });
     const scope = scopeBody(form);
     if (scope) body['scope'] = scope;
     return firstValueFrom(
@@ -51,7 +64,7 @@ export class ParametersService {
   }
 }
 
-/** Fields shared by creation and metadata updates. */
+/** Editable metadata, including unit and constraints. */
 function metadataBody(form: ParameterFormValue): Record<string, unknown> {
   const { name, category, businessDomain, description, unit } = form;
   const body: Record<string, unknown> = withoutEmpty({ name, category, businessDomain, description, unit });

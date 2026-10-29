@@ -1,0 +1,23 @@
+<app-modal [heading]="'Versión ' + version().versionNumber" (closed)="closed.emit()">
+  <dl>
+    <div>
+      <dt>Estado</dt>
+      <dd><span class="badge {{ version().status | statusTone }}">{{ version().status }}</span></dd>
+    </div>
+    <div>
+      <dt>Valor</dt>
+      <dd>{{ version().value | displayValue }} @if (version().value != null) { {{ unit() }} }</dd>
+    </div>
+    <div><dt>Tipo de cambio</dt><dd>{{ version().changeType }}</dd></div>
+    <div><dt>Aprobada por</dt><dd>{{ version().approvedBy }}</dd></div>
+    <div><dt>Fecha de aprobación</dt><dd>{{ version().approvedAt | date: 'short' }}</dd></div>
+    <div><dt>Propuesta por</dt><dd>{{ version().createdBy }}</dd></div>
+    <div><dt>Vigente desde</dt><dd>{{ version().effectiveFrom | date: 'short' }}</dd></div>
+    <div><dt>Vigente hasta</dt><dd>{{ (version().effectiveTo | date: 'short') ?? '—' }}</dd></div>
+    <div><dt>Justificación</dt><dd>{{ version().reason | displayValue }}</dd></div>
+    <div><dt>Solicitud de cambio</dt><dd>{{ version().changeRequestId }}</dd></div>
+  </dl>
+  <div class="form-actions">
+    <button type="button" class="secondary" (click)="closed.emit()">Cerrar</button>
+  </div>
+</app-modal>

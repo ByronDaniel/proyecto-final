@@ -33,7 +33,9 @@ test('HTTP maker-checker flow, security, and idempotency', async () => {
     const create = () => request(app).post('/api/v1/parameters').set('Authorization', maker).set('Idempotency-Key', key).send(parameterBody);
     const parameter = await create();
     assert.equal(parameter.status, 201, JSON.stringify(parameter.body));
-    assert.equal((await request(app).get('/api/v1/parameters').set('Authorization', maker)).body.items.length, 1);
+    const draftList = await request(app).get('/api/v1/parameters').set('Authorization', maker);
+    assert.equal(draftList.body.items.length, 1);
+    assert.equal(Object.hasOwn(draftList.body.items[0], 'currentValue'), false);
     const replay = await create();
     assert.equal(replay.body.id, parameter.body.id);
     const reused = await request(app).post('/api/v1/parameters').set('Authorization', maker).set('Idempotency-Key', key).send({ ...parameterBody, code: 'OTHER_CODE' });
@@ -73,6 +75,15 @@ test('HTTP maker-checker flow, security, and idempotency', async () => {
     assert.equal((await request(app).get('/api/v1/parameter-values/TEST_LIMIT').set('Authorization', consumer)).body.value, '200.00');
     const updated = await request(app).get(`/api/v1/parameters/${parameter.body.id}`).set('Authorization', maker);
     assert.equal(updated.body.currentVersionNumber, 2);
+    assert.equal(Object.hasOwn(updated.body, 'currentValue'), false);
+    const listed = await request(app).get('/api/v1/parameters').set('Authorization', maker).query({ code: 'TEST_LIMIT' });
+    assert.equal(listed.body.items[0].currentValue, '200.00');
+    const history = await request(app).get(`/api/v1/parameters/${parameter.body.id}/versions`).set('Authorization', auditor);
+    assert.equal(history.status, 200, JSON.stringify(history.body));
+    assert.deepEqual(history.body.items.map(version => [version.versionNumber, version.status, version.value]), [[2, 'ACTIVE', '200.00'], [1, 'EXPIRED', '100.00']]);
+    assert.equal(history.body.page.totalElements, 2);
+    assert.equal((await request(app).get(`/api/v1/parameters/${parameter.body.id}/versions`).set('Authorization', consumer)).status, 403);
+    assert.equal((await request(app).get(`/api/v1/parameters/${randomUUID()}/versions`).set('Authorization', maker)).status, 404);
     const events = await store.repo('audit').find({ parameterId: parameter.body.id, operation: 'VERSION_ACTIVATED' });
     assert.equal(events.length, 1);
     assert.equal(events[0].actor.type, 'SYSTEM');

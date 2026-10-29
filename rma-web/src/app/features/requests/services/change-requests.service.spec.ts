@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { API_URL } from '../../../shared/http/api';
 import { emptyChangeRequestForm } from '../models/change-request-form';
 import { ChangeRequestsService } from './change-requests.service';
 
@@ -16,7 +17,7 @@ describe('ChangeRequestsService', () => {
 
     service.create({ id: 'parameter-id', dataType: 'BOOLEAN', currentVersionNumber: null }, form, 'key-1');
 
-    const request = backend.expectOne('/api/v1/change-requests');
+    const request = backend.expectOne(`${API_URL}/change-requests`);
     expect(request.request.method).toBe('POST');
     expect(request.request.headers.get('Idempotency-Key')).toBe('key-1');
     expect(request.request.body).toEqual({

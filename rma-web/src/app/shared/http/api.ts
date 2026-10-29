@@ -3,6 +3,8 @@ import { environment } from '../../../environments/environment';
 
 export const API_URL = environment.apiUrl;
 export const PAGE_SIZE = 20;
+/** Largest page the API accepts. */
+export const MAX_PAGE_SIZE = 100;
 
 export interface WithEtag<T> {
   data: T;

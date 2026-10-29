@@ -36,18 +36,18 @@
 
   @if (!target().currentVersionNumber) {
     <label>
-      Última versión publicada
+      <span>Última versión publicada <small class="optional">(opcional)</small></span>
       <input type="number" min="1" step="1" name="baseVersionNumber" [(ngModel)]="form.baseVersionNumber" />
     </label>
   }
 
   <div class="form-grid">
     <label>
-      Vigente desde
+      <span>Vigente desde <small class="optional">(opcional)</small></span>
       <input type="datetime-local" name="effectiveFrom" [(ngModel)]="form.effectiveFrom" />
     </label>
     <label>
-      Vigente hasta
+      <span>Vigente hasta <small class="optional">(opcional)</small></span>
       <input type="datetime-local" name="effectiveTo" [(ngModel)]="form.effectiveTo" />
     </label>
   </div>

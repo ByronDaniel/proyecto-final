@@ -71,12 +71,18 @@ export function createApp(store, config) {
   app.get('/api/v1/parameters', adminReaders, async (req, res) => {
     await service.synchronizeAll();
     const filter = Object.fromEntries(['code', 'category', 'businessDomain', 'status'].filter(key => req.query[key]).map(key => [key, req.query[key]]));
-    res.json(await service.list('parameters', filter, req.query, 'code,asc'));
+    const result = await service.list('parameters', filter, req.query, 'code,asc');
+    res.json({ ...result, items: await service.withCurrentValues(result.items) });
   });
   app.post('/api/v1/parameters', writers, async (req, res) => sendCreated(res, await service.createParameter(req.body, context(req))));
   app.get('/api/v1/parameters/:id', adminReaders, async (req, res) => {
     await store.transaction(session => service.synchronize(req.params.id, session));
     sendResource(req, res, await service.find('parameters', req.params.id));
+  });
+  app.get('/api/v1/parameters/:id/versions', adminReaders, async (req, res) => {
+    await store.transaction(session => service.synchronize(req.params.id, session));
+    await service.find('parameters', req.params.id);
+    res.json(await service.list('versions', { parameterId: req.params.id }, req.query, 'approvedAt,desc'));
   });
   app.put('/api/v1/parameters/:id', writers, async (req, res) => sendResource(req, res, await service.updateParameter(req.params.id, req.body, context(req))));
   app.delete('/api/v1/parameters/:id', writers, async (req, res) => { await service.retireParameter(req.params.id, context(req)); res.status(204).end(); });

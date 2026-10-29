@@ -29,49 +29,49 @@
     </label>
   </div>
   <label>
-    Descripción
+    <span>Descripción <small class="optional">(opcional)</small></span>
     <textarea name="description" [(ngModel)]="form.description"></textarea>
   </label>
   <label>
-    Unidad
+    <span>Unidad <small class="optional">(opcional)</small></span>
     <input name="unit" [(ngModel)]="form.unit" />
   </label>
 
   @if (isCreate) {
     <div class="form-grid">
       <label>
-        Canal
+        <span>Canal <small class="optional">(opcional)</small></span>
         <input name="channel" [(ngModel)]="form.channel" />
       </label>
       <label>
-        Producto
+        <span>Producto <small class="optional">(opcional)</small></span>
         <input name="product" [(ngModel)]="form.product" />
       </label>
     </div>
     <label>
-      Segmento
+      <span>Segmento <small class="optional">(opcional)</small></span>
       <input name="segment" [(ngModel)]="form.segment" />
     </label>
+  } @else {
+    <div class="form-grid">
+      <label>
+        <span>Valor mínimo <small class="optional">(opcional)</small></span>
+        <input type="number" name="min" [(ngModel)]="form.min" />
+      </label>
+      <label>
+        <span>Valor máximo <small class="optional">(opcional)</small></span>
+        <input type="number" name="max" [(ngModel)]="form.max" />
+      </label>
+    </div>
+    <label>
+      <span>Patrón <small class="optional">(opcional)</small></span>
+      <input name="pattern" [(ngModel)]="form.pattern" />
+    </label>
+    <label>
+      <span>Valores permitidos <small class="optional">(opcional)</small></span>
+      <input name="allowedValues" [(ngModel)]="form.allowedValues" placeholder="Separados por comas" />
+    </label>
   }
-
-  <div class="form-grid">
-    <label>
-      Valor mínimo
-      <input type="number" name="min" [(ngModel)]="form.min" />
-    </label>
-    <label>
-      Valor máximo
-      <input type="number" name="max" [(ngModel)]="form.max" />
-    </label>
-  </div>
-  <label>
-    Patrón
-    <input name="pattern" [(ngModel)]="form.pattern" />
-  </label>
-  <label>
-    Valores permitidos
-    <input name="allowedValues" [(ngModel)]="form.allowedValues" placeholder="Separados por comas" />
-  </label>
 
   @if (error()) {
     <div class="alert error" role="alert">{{ error() }}</div>

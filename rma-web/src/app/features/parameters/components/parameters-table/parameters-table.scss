@@ -1,0 +1,13 @@
+/* JSON values can be long; keep the column from pushing the actions off screen. */
+.value {
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.row-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+}

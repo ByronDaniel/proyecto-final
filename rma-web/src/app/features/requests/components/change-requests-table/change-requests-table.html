@@ -14,7 +14,7 @@
       <tr>
         <td class="code">{{ row.parameterCode }}</td>
         <td>{{ row.changeType }}</td>
-        <td><span class="badge">{{ row.status }}</span></td>
+        <td><span class="badge {{ row.status | statusTone }}">{{ row.status }}</span></td>
         <td>{{ row.createdBy }}</td>
         <td>{{ row.createdAt | date: 'short' }}</td>
         <td><button class="text-button" (click)="viewDetail.emit(row)">Ver detalle →</button></td>

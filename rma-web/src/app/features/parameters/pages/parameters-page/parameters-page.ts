@@ -10,9 +10,11 @@ import { PageHeader } from '../../../../shared/components/page-header/page-heade
 import { errorMessage } from '../../../../shared/utils/error-message';
 import { ParameterDetail } from '../../components/parameter-detail/parameter-detail';
 import { ParameterForm } from '../../components/parameter-form/parameter-form';
+import { ParameterHistory } from '../../components/parameter-history/parameter-history';
 import { ParametersTable } from '../../components/parameters-table/parameters-table';
 import { Parameter } from '../../models/parameter';
 import { ParameterFormValue } from '../../models/parameter-form';
+import { ParameterVersion } from '../../models/parameter-version';
 import { ParametersService } from '../../services/parameters.service';
 
 type ParameterModal = 'create' | 'edit' | 'propose';
@@ -30,6 +32,7 @@ const MODAL_TITLES: Record<ParameterModal, string> = {
     DataSection,
     ParametersTable,
     ParameterDetail,
+    ParameterHistory,
     Modal,
     ParameterForm,
     ChangeRequestForm,
@@ -55,6 +58,7 @@ export class ParametersPage {
   notice = '';
 
   detail: Parameter | null = null;
+  history: { parameter: Parameter; versions: ParameterVersion[] } | null = null;
   modal: ParameterModal | null = null;
   private etag = '';
   private idempotencyKey = '';
@@ -94,6 +98,15 @@ export class ParametersPage {
       const { data, etag } = await this.parameters.get(parameter.id);
       this.detail = data;
       this.etag = etag;
+    } catch (error) {
+      this.error = errorMessage(error);
+    }
+  }
+
+  async showHistory(parameter: Parameter) {
+    this.error = '';
+    try {
+      this.history = { parameter, versions: await this.parameters.versions(parameter.id) };
     } catch (error) {
       this.error = errorMessage(error);
     }

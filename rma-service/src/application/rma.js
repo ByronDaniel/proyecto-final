@@ -178,6 +178,15 @@ export class RmaService {
     return { code: parameter.code, dataType: parameter.dataType, value: version.value, ...(parameter.unit ? { unit: parameter.unit } : {}), ...(parameter.scope ? { scope: parameter.scope } : {}), versionNumber: version.versionNumber, effectiveFrom: version.effectiveFrom, effectiveTo: version.effectiveTo };
   }
 
+  /** Adds the value of each parameter's current version, read with a single query. Not stored. */
+  async withCurrentValues(parameters) {
+    const current = parameters.filter(parameter => parameter.currentVersionNumber);
+    if (!current.length) return parameters;
+    const versions = await this.repo('versions').find({ $or: current.map(parameter => ({ parameterId: parameter.id, versionNumber: parameter.currentVersionNumber })) });
+    const values = new Map(versions.filter(version => has(version, 'value')).map(version => [version.parameterId, version.value]));
+    return parameters.map(parameter => (values.has(parameter.id) ? { ...parameter, currentValue: values.get(parameter.id) } : parameter));
+  }
+
   async list(name, filter, query, defaultSort) {
     const pageNumber = Number(query.page ?? 0);
     const size = Number(query.size ?? 20);

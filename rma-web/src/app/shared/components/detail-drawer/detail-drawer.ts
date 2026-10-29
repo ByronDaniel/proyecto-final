@@ -8,5 +8,6 @@ import { Component, input, output } from '@angular/core';
 })
 export class DetailDrawer {
   readonly heading = input.required<string>();
+  readonly eyebrow = input('DETALLE');
   readonly closed = output<void>();
 }
