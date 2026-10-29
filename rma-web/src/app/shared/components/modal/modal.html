@@ -1,0 +1,9 @@
+<div class="overlay">
+  <section class="modal" role="dialog" aria-modal="true" aria-label="Formulario">
+    <div class="drawer-heading">
+      <h2>{{ heading() }}</h2>
+      <button class="close" aria-label="Cerrar" (click)="closed.emit()">×</button>
+    </div>
+    <ng-content />
+  </section>
+</div>

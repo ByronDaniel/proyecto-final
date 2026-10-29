@@ -1,0 +1,85 @@
+<form #formRef="ngForm" (ngSubmit)="formRef.valid && submitted.emit(form)">
+  @if (isCreate) {
+    <label>
+      Código
+      <input name="code" [(ngModel)]="form.code" required placeholder="TRANSFER_DAILY_LIMIT" />
+    </label>
+    <label>
+      Tipo
+      <select name="dataType" [(ngModel)]="form.dataType">
+        @for (type of dataTypes; track type) {
+          <option [value]="type">{{ type }}</option>
+        }
+      </select>
+    </label>
+  }
+
+  <label>
+    Nombre
+    <input name="name" [(ngModel)]="form.name" minlength="3" required />
+  </label>
+  <div class="form-grid">
+    <label>
+      Categoría
+      <input name="category" [(ngModel)]="form.category" required />
+    </label>
+    <label>
+      Dominio
+      <input name="businessDomain" [(ngModel)]="form.businessDomain" required />
+    </label>
+  </div>
+  <label>
+    Descripción
+    <textarea name="description" [(ngModel)]="form.description"></textarea>
+  </label>
+  <label>
+    Unidad
+    <input name="unit" [(ngModel)]="form.unit" />
+  </label>
+
+  @if (isCreate) {
+    <div class="form-grid">
+      <label>
+        Canal
+        <input name="channel" [(ngModel)]="form.channel" />
+      </label>
+      <label>
+        Producto
+        <input name="product" [(ngModel)]="form.product" />
+      </label>
+    </div>
+    <label>
+      Segmento
+      <input name="segment" [(ngModel)]="form.segment" />
+    </label>
+  }
+
+  <div class="form-grid">
+    <label>
+      Valor mínimo
+      <input type="number" name="min" [(ngModel)]="form.min" />
+    </label>
+    <label>
+      Valor máximo
+      <input type="number" name="max" [(ngModel)]="form.max" />
+    </label>
+  </div>
+  <label>
+    Patrón
+    <input name="pattern" [(ngModel)]="form.pattern" />
+  </label>
+  <label>
+    Valores permitidos
+    <input name="allowedValues" [(ngModel)]="form.allowedValues" placeholder="Separados por comas" />
+  </label>
+
+  @if (error()) {
+    <div class="alert error" role="alert">{{ error() }}</div>
+  }
+  <div class="form-actions">
+    <button type="button" class="secondary" (click)="cancelled.emit()">Cancelar</button>
+    <button type="submit" class="primary" [disabled]="busy() || formRef.invalid">
+      {{ busy() ? 'Guardando...' : 'Confirmar' }}
+    </button>
+  </div>
+</form>

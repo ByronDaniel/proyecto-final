@@ -1,0 +1,23 @@
+<form #formRef="ngForm" (ngSubmit)="formRef.valid && submitted.emit(text)">
+  @if (kind() === 'approval') {
+    <label>
+      Comentario
+      <textarea name="comment" [(ngModel)]="text" maxlength="500"></textarea>
+    </label>
+  } @else {
+    <label>
+      Motivo del rechazo
+      <textarea name="reason" [(ngModel)]="text" minlength="10" maxlength="500" required></textarea>
+    </label>
+  }
+
+  @if (error()) {
+    <div class="alert error" role="alert">{{ error() }}</div>
+  }
+  <div class="form-actions">
+    <button type="button" class="secondary" (click)="cancelled.emit()">Cancelar</button>
+    <button type="submit" class="primary" [disabled]="busy() || formRef.invalid">
+      {{ busy() ? 'Guardando...' : 'Confirmar' }}
+    </button>
+  </div>
+</form>

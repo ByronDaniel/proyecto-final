@@ -1,0 +1,47 @@
+<app-page-header heading="Solicitudes" description="Propuestas de cambio y decisiones." />
+
+@if (error) {
+  <div class="alert error" role="alert">{{ error }} <button (click)="error = ''">×</button></div>
+}
+@if (notice) {
+  <div class="alert success" role="status">{{ notice }} <button (click)="notice = ''">×</button></div>
+}
+
+<app-data-section
+  heading="Solicitudes"
+  [total]="total"
+  [page]="page"
+  [totalPages]="totalPages"
+  [busy]="busy"
+  [empty]="!rows.length"
+  [(filter)]="filter"
+  [filterOptions]="statusOptions"
+  filterLabel="Estado"
+  (searchRequested)="search()"
+  (pageChange)="goToPage($event)"
+>
+  <app-change-requests-table [rows]="rows" (viewDetail)="show($event)" />
+</app-data-section>
+
+@if (detail && !modal) {
+  <app-change-request-detail
+    [request]="detail"
+    [decision]="decision"
+    (closed)="detail = null"
+    (cancelRequest)="cancelRequest()"
+    (approve)="openModal('approval')"
+    (reject)="openModal('rejection')"
+  />
+}
+
+@if (modal) {
+  <app-modal [heading]="modalTitles[modal]" (closed)="modal = null">
+    <app-decision-form
+      [kind]="modal"
+      [busy]="busy"
+      [error]="error"
+      (submitted)="decide($event)"
+      (cancelled)="modal = null"
+    />
+  </app-modal>
+}

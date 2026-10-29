@@ -1,0 +1,13 @@
+<header class="topbar">
+  <div><span class="breadcrumb">RMA / </span>{{ heading() }}</div>
+  @if (auth.session(); as session) {
+    <div class="account">
+      <span class="avatar">{{ session.username.charAt(0).toUpperCase() }}</span>
+      <div>
+        <strong>{{ session.username }}</strong>
+        <small>{{ session.roles.join(' · ') }}</small>
+      </div>
+      <button class="text-button" (click)="auth.logout()">Salir</button>
+    </div>
+  }
+</header>

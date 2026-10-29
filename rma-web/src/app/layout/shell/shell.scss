@@ -1,0 +1,25 @@
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.workspace {
+  flex: 1;
+  min-width: 0;
+}
+
+.content {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 45px 40px;
+}
+
+@media (max-width: 760px) {
+  .app-shell {
+    display: block;
+  }
+
+  .content {
+    padding: 28px 18px;
+  }
+}

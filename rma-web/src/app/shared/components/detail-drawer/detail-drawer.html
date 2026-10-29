@@ -1,0 +1,12 @@
+<div class="overlay" (click)="closed.emit()">
+  <section class="drawer" (click)="$event.stopPropagation()" role="dialog" aria-modal="true" aria-label="Detalle">
+    <div class="drawer-heading">
+      <div>
+        <div class="eyebrow">DETALLE</div>
+        <h2>{{ heading() }}</h2>
+      </div>
+      <button class="close" aria-label="Cerrar" (click)="closed.emit()">×</button>
+    </div>
+    <ng-content />
+  </section>
+</div>

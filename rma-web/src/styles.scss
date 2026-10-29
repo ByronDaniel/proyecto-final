@@ -1,9 +1,229 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
 
+/* Shared UI primitives. Component-specific styles live next to each component. */
+
 :root { color-scheme: light; font-family: 'DM Sans', sans-serif; color: #17211f; background: #f5f7f5; font-synthesis: none; }
 * { box-sizing: border-box; }
 body { margin: 0; min-width: 0; }
 button, input, select, textarea { font: inherit; }
 button { cursor: pointer; }
 button:disabled { cursor: not-allowed; opacity: .48; }
-button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid #65b5a7; outline-offset: 2px; }
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid #65b5a7; outline-offset: 2px; }
+
+/* Typography */
+
+h2 {
+  font: 700 17px 'Manrope', sans-serif;
+  margin: 0;
+}
+
+.eyebrow {
+  color: #508478;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.brand-mark {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  background: #194f44;
+  color: white;
+  display: inline-grid;
+  place-items: center;
+  font: 800 20px 'Manrope', sans-serif;
+}
+
+/* Forms */
+
+label {
+  display: grid;
+  gap: 7px;
+  color: #475b55;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid #d5dfda;
+  border-radius: 5px;
+  background: #fff;
+  padding: 10px 12px;
+  color: #1d2b27;
+}
+
+textarea {
+  min-height: 82px;
+  resize: vertical;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.form-actions,
+.drawer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 25px;
+}
+
+/* Buttons */
+
+.primary,
+.secondary {
+  border-radius: 5px;
+  min-height: 40px;
+  padding: 9px 15px;
+  border: 1px solid transparent;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.primary {
+  color: white;
+  background: #19584a;
+}
+
+.primary svg {
+  vertical-align: middle;
+}
+
+.primary:hover {
+  background: #103f35;
+}
+
+.secondary {
+  color: #324b43;
+  background: white;
+  border-color: #d7e1dc;
+}
+
+.secondary:hover {
+  background: #f0f5f2;
+}
+
+.danger {
+  color: #a8483b;
+}
+
+.text-button {
+  padding: 5px;
+  border: 0;
+  background: transparent;
+  color: #367768;
+  font-weight: 700;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+/* Alerts */
+
+.alert {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-radius: 4px;
+  font-size: 13px;
+  margin: 12px 0;
+}
+
+.alert button {
+  border: 0;
+  background: transparent;
+}
+
+.error {
+  background: #fcebea;
+  color: #9c3a33;
+}
+
+.success {
+  background: #e4f3e8;
+  color: #286348;
+}
+
+/* Tables */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 13px;
+}
+
+th {
+  background: #f8faf8;
+  color: #82948b;
+  font-size: 10px;
+  padding: 14px 16px;
+  white-space: nowrap;
+}
+
+td {
+  border-top: 1px solid #edf1ee;
+  padding: 16px;
+  white-space: nowrap;
+}
+
+td.code {
+  font-weight: 700;
+  color: #244e41;
+}
+
+.badge {
+  color: #286e57;
+  background: #e7f2e8;
+  border-radius: 4px;
+  padding: 5px 8px;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+/* Overlays (detail drawer and modal) */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: #132d28a3;
+  display: flex;
+  justify-content: flex-end;
+  z-index: 5;
+}
+
+.drawer-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.drawer-heading h2 {
+  margin-top: 8px;
+  overflow-wrap: anywhere;
+}
+
+.close {
+  border: 0;
+  background: transparent;
+  color: #77877e;
+  font-size: 26px;
+  line-height: 1;
+}
+
+@media (max-width: 760px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}

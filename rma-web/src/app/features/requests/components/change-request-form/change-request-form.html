@@ -1,0 +1,69 @@
+<form #formRef="ngForm" (ngSubmit)="formRef.valid && submitted.emit(form)">
+  <label>
+    Tipo de cambio
+    <select name="changeType" [(ngModel)]="form.changeType">
+      <option value="SET_VALUE">Establecer valor</option>
+      <option value="DEACTIVATE">Desactivar</option>
+      <option value="REACTIVATE">Reactivar</option>
+    </select>
+  </label>
+
+  @if (form.changeType === 'SET_VALUE') {
+    <label>
+      Valor propuesto
+      @switch (target().dataType) {
+        @case ('BOOLEAN') {
+          <select name="proposedValue" [(ngModel)]="form.proposedValue" required>
+            <option value="" disabled>Seleccionar</option>
+            <option value="true">Verdadero</option>
+            <option value="false">Falso</option>
+          </select>
+        }
+        @case ('JSON') {
+          <textarea name="proposedValue" [(ngModel)]="form.proposedValue" required></textarea>
+        }
+        @default {
+          <input
+            name="proposedValue"
+            [(ngModel)]="form.proposedValue"
+            [type]="target().dataType === 'DATE' ? 'date' : 'text'"
+            required
+          />
+        }
+      }
+    </label>
+  }
+
+  @if (!target().currentVersionNumber) {
+    <label>
+      Última versión publicada
+      <input type="number" min="1" step="1" name="baseVersionNumber" [(ngModel)]="form.baseVersionNumber" />
+    </label>
+  }
+
+  <div class="form-grid">
+    <label>
+      Vigente desde
+      <input type="datetime-local" name="effectiveFrom" [(ngModel)]="form.effectiveFrom" />
+    </label>
+    <label>
+      Vigente hasta
+      <input type="datetime-local" name="effectiveTo" [(ngModel)]="form.effectiveTo" />
+    </label>
+  </div>
+
+  <label>
+    Justificación
+    <textarea name="reason" [(ngModel)]="form.reason" minlength="5" required></textarea>
+  </label>
+
+  @if (error()) {
+    <div class="alert error" role="alert">{{ error() }}</div>
+  }
+  <div class="form-actions">
+    <button type="button" class="secondary" (click)="cancelled.emit()">Cancelar</button>
+    <button type="submit" class="primary" [disabled]="busy() || formRef.invalid">
+      {{ busy() ? 'Guardando...' : 'Confirmar' }}
+    </button>
+  </div>
+</form>

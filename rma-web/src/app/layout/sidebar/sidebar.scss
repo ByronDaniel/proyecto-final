@@ -1,0 +1,122 @@
+// The aside must be the flex item of the shell, so the host element does not generate a box.
+:host {
+  display: contents;
+}
+
+.sidebar {
+  flex: 0 0 236px;
+  background: #153f36;
+  color: #e6f0eb;
+  padding: 28px 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 8px;
+  margin-bottom: 50px;
+}
+
+.sidebar-brand strong {
+  font: 800 21px 'Manrope', sans-serif;
+}
+
+.sidebar-brand .brand-mark {
+  background: #d9e8d8;
+  color: #174b3e;
+}
+
+.sidebar-brand div {
+  display: grid;
+}
+
+.sidebar-brand small {
+  font-size: 9px;
+  color: #a6c4b8;
+}
+
+.nav-caption {
+  color: #a2bdb2;
+  font-size: 10px;
+  font-weight: 700;
+  margin: 0 10px 12px;
+}
+
+nav {
+  display: grid;
+  gap: 5px;
+}
+
+nav a {
+  text-align: left;
+  text-decoration: none;
+  border-radius: 5px;
+  background: transparent;
+  color: #c8dcd3;
+  padding: 12px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+nav a:hover,
+nav a.active {
+  background: #32675a;
+  color: white;
+}
+
+.nav-icon {
+  display: inline-block;
+  font-size: 18px;
+  width: 30px;
+}
+
+.nav-icon svg {
+  vertical-align: middle;
+}
+
+.sidebar-bottom {
+  margin: auto 10px 0;
+  color: #aac3b7;
+  font-size: 11px;
+}
+
+.status-dot {
+  display: inline-block;
+  border-radius: 50%;
+  width: 7px;
+  height: 7px;
+  background: #aedb82;
+  margin-right: 7px;
+}
+
+@media (max-width: 760px) {
+  .sidebar {
+    padding: 14px 16px;
+  }
+
+  .sidebar-brand {
+    margin: 0 0 15px;
+  }
+
+  .nav-caption,
+  .sidebar-bottom {
+    display: none;
+  }
+
+  nav {
+    display: flex;
+    overflow-x: auto;
+  }
+
+  nav a {
+    white-space: nowrap;
+    padding: 8px 10px;
+  }
+
+  .nav-icon {
+    width: 23px;
+  }
+}

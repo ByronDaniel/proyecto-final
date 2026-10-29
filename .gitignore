@@ -7,3 +7,5 @@ dist/
 .angular/
 playwright-report/
 test-results/
+
+.DS_Store

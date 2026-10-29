@@ -1,0 +1,21 @@
+dl {
+  margin: 0;
+}
+
+dl > div {
+  display: grid;
+  grid-template-columns: 38% 1fr;
+  gap: 12px;
+  border-bottom: 1px solid #edf1ee;
+  padding: 13px 0;
+  font-size: 13px;
+}
+
+dt {
+  color: #82958b;
+}
+
+dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}

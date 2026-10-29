@@ -1,0 +1,35 @@
+<app-page-header heading="Valores vigentes" description="Consulta los valores disponibles para consumo." />
+
+@if (error) {
+  <div class="alert error" role="alert">{{ error }} <button (click)="error = ''">×</button></div>
+}
+
+<app-data-section
+  heading="Valores vigentes"
+  [total]="total"
+  [page]="page"
+  [totalPages]="totalPages"
+  [busy]="busy"
+  [empty]="!rows.length"
+  [(filter)]="filter"
+  filterPlaceholder="Códigos separados por coma"
+  (searchRequested)="search()"
+  (pageChange)="goToPage($event)"
+>
+  <app-parameter-values-table [rows]="rows" (viewDetail)="show($event)" />
+
+  @if (unavailable.length) {
+    <div class="unavailable" sectionFooter>
+      No disponibles:
+      @for (item of unavailable; track item.code) {
+        <span>{{ item.code }} ({{ item.reason }}) </span>
+      }
+    </div>
+  }
+</app-data-section>
+
+@if (detail) {
+  <app-detail-drawer [heading]="detail.code" (closed)="detail = null">
+    <app-key-value-list [data]="detail" />
+  </app-detail-drawer>
+}

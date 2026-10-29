@@ -1,0 +1,24 @@
+<table>
+  <thead>
+    <tr>
+      <th>CÓDIGO</th>
+      <th>NOMBRE</th>
+      <th>DOMINIO</th>
+      <th>TIPO</th>
+      <th>ESTADO</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (row of rows(); track row.id) {
+      <tr>
+        <td class="code">{{ row.code }}</td>
+        <td>{{ row.name }}</td>
+        <td>{{ row.businessDomain }}</td>
+        <td>{{ row.dataType }}</td>
+        <td><span class="badge">{{ row.status }}</span></td>
+        <td><button class="text-button" (click)="viewDetail.emit(row)">Ver detalle →</button></td>
+      </tr>
+    }
+  </tbody>
+</table>

@@ -1,0 +1,24 @@
+<table>
+  <thead>
+    <tr>
+      <th>PARÁMETRO</th>
+      <th>TIPO DE CAMBIO</th>
+      <th>ESTADO</th>
+      <th>SOLICITANTE</th>
+      <th>FECHA</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (row of rows(); track row.id) {
+      <tr>
+        <td class="code">{{ row.parameterCode }}</td>
+        <td>{{ row.changeType }}</td>
+        <td><span class="badge">{{ row.status }}</span></td>
+        <td>{{ row.createdBy }}</td>
+        <td>{{ row.createdAt | date: 'short' }}</td>
+        <td><button class="text-button" (click)="viewDetail.emit(row)">Ver detalle →</button></td>
+      </tr>
+    }
+  </tbody>
+</table>

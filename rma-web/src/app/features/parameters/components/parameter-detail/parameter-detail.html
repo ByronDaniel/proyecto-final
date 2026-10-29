@@ -1,0 +1,15 @@
+<app-detail-drawer [heading]="parameter().code" (closed)="closed.emit()">
+  <app-key-value-list [data]="parameter()" />
+
+  <div class="drawer-actions">
+    @if (canManage()) {
+      <button class="secondary" (click)="edit.emit()">Editar metadatos</button>
+      @if (parameter().status === 'DRAFT') {
+        <button class="secondary danger" (click)="retire.emit()">Dar de baja</button>
+      }
+    }
+    @if (canPropose()) {
+      <button class="primary" (click)="propose.emit()">Proponer cambio</button>
+    }
+  </div>
+</app-detail-drawer>

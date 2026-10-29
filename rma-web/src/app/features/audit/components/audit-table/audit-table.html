@@ -1,0 +1,24 @@
+<table>
+  <thead>
+    <tr>
+      <th>OPERACIÓN</th>
+      <th>ACTOR</th>
+      <th>RESULTADO</th>
+      <th>FECHA</th>
+      <th>REFERENCIA</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (row of rows(); track row.id) {
+      <tr>
+        <td class="code">{{ row.operation }}</td>
+        <td>{{ row.actor.id }}</td>
+        <td><span class="badge">{{ row.outcome }}</span></td>
+        <td>{{ row.occurredAt | date: 'short' }}</td>
+        <td>{{ row.correlationId }}</td>
+        <td><button class="text-button" (click)="viewDetail.emit(row)">Ver detalle →</button></td>
+      </tr>
+    }
+  </tbody>
+</table>

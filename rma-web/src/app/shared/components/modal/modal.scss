@@ -1,0 +1,9 @@
+.modal {
+  width: min(520px, calc(100% - 32px));
+  max-height: calc(100vh - 32px);
+  margin: auto;
+  border-radius: 7px;
+  background: white;
+  padding: 30px;
+  overflow-y: auto;
+}

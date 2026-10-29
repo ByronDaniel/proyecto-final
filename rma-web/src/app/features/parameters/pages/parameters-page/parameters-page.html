@@ -1,0 +1,59 @@
+<app-page-header heading="Parámetros" description="Catálogo de definiciones de negocio.">
+  @if (canCreate()) {
+    <button class="primary" (click)="openModal('create')"><svg lucidePlus [size]="16"></svg> Nuevo parámetro</button>
+  }
+</app-page-header>
+
+@if (error) {
+  <div class="alert error" role="alert">{{ error }} <button (click)="error = ''">×</button></div>
+}
+@if (notice) {
+  <div class="alert success" role="status">{{ notice }} <button (click)="notice = ''">×</button></div>
+}
+
+<app-data-section
+  heading="Parámetros"
+  [total]="total"
+  [page]="page"
+  [totalPages]="totalPages"
+  [busy]="busy"
+  [empty]="!rows.length"
+  [(filter)]="filter"
+  filterPlaceholder="Buscar código exacto"
+  (searchRequested)="search()"
+  (pageChange)="goToPage($event)"
+>
+  <app-parameters-table [rows]="rows" (viewDetail)="show($event)" />
+</app-data-section>
+
+@if (detail && !modal) {
+  <app-parameter-detail
+    [parameter]="detail"
+    (closed)="detail = null"
+    (edit)="openModal('edit')"
+    (retire)="retire()"
+    (propose)="openModal('propose')"
+  />
+}
+
+@if (modal) {
+  <app-modal [heading]="modalTitles[modal]" (closed)="modal = null">
+    @if (modal === 'propose' && detail) {
+      <app-change-request-form
+        [target]="detail"
+        [busy]="busy"
+        [error]="error"
+        (submitted)="proposeChange($event)"
+        (cancelled)="modal = null"
+      />
+    } @else {
+      <app-parameter-form
+        [parameter]="modal === 'edit' ? detail : null"
+        [busy]="busy"
+        [error]="error"
+        (submitted)="saveParameter($event)"
+        (cancelled)="modal = null"
+      />
+    }
+  </app-modal>
+}

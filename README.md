@@ -47,7 +47,9 @@ npm ci
 npm start
 ```
 
-Open the URL printed by Angular. The development proxy forwards `/api` to `http://localhost:3010`. To use another backend address, update `rma-web/proxy.conf.json`. The frontend keeps the JWT in session storage until logout, expiry, or tab closure.
+Open the URL printed by Angular. The development proxy forwards `/api` to `http://localhost:3010`. To use another backend address during development, update `rma-web/proxy.conf.json`.
+
+Production builds (`npm run build`) call the backend directly at the absolute URL set in `rma-web/src/environments/environment.production.ts`. Set `CORS_ORIGIN` in the backend `.env` to the origin where the frontend is served (for example `https://rma.example.com`). The frontend keeps the JWT in session storage until logout, expiry, or tab closure.
 
 Parameters with previously published but expired versions require the last published version number when submitting a new change. It can be found in the details of an approved change request. Reactivation restores the most recently published `SET_VALUE`; expiration does not restore an older value. Scheduled transitions are checked on startup and approximately every five seconds, and current-value reads evaluate validity at request time.
 

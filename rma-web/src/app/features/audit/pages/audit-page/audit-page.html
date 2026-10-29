@@ -1,0 +1,26 @@
+<app-page-header heading="Auditoría" description="Registro de actividad y decisiones." />
+
+@if (error) {
+  <div class="alert error" role="alert">{{ error }} <button (click)="error = ''">×</button></div>
+}
+
+<app-data-section
+  heading="Auditoría"
+  [total]="total"
+  [page]="page"
+  [totalPages]="totalPages"
+  [busy]="busy"
+  [empty]="!rows.length"
+  [(filter)]="filter"
+  filterPlaceholder="Desde (fecha ISO)"
+  (searchRequested)="search()"
+  (pageChange)="goToPage($event)"
+>
+  <app-audit-table [rows]="rows" (viewDetail)="show($event)" />
+</app-data-section>
+
+@if (detail) {
+  <app-detail-drawer [heading]="detail.operation" (closed)="detail = null">
+    <app-key-value-list [data]="detail" />
+  </app-detail-drawer>
+}

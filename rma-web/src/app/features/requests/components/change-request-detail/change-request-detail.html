@@ -1,0 +1,18 @@
+<app-detail-drawer [heading]="request().parameterCode" (closed)="closed.emit()">
+  <app-key-value-list [data]="request()" />
+
+  @if (decision(); as decisionData) {
+    <h2 class="decision-title">Decisión</h2>
+    <app-key-value-list [data]="decisionData" />
+  }
+
+  <div class="drawer-actions">
+    @if (canCancel()) {
+      <button class="secondary danger" (click)="cancelRequest.emit()">Cancelar propuesta</button>
+    }
+    @if (canDecide()) {
+      <button class="secondary danger" (click)="reject.emit()">Rechazar</button>
+      <button class="primary" (click)="approve.emit()">Aprobar</button>
+    }
+  </div>
+</app-detail-drawer>

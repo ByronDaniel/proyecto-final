@@ -1,0 +1,52 @@
+<section class="data-section">
+  <div class="section-heading">
+    <div>
+      <h2>{{ heading() }}</h2>
+      <span>{{ total() }} registros</span>
+    </div>
+    <div class="filters">
+      @if (filterOptions(); as options) {
+        <select [ngModel]="filter()" (ngModelChange)="filter.set($event)" [attr.aria-label]="filterLabel()">
+          @for (option of options; track option.value) {
+            <option [value]="option.value">{{ option.label }}</option>
+          }
+        </select>
+      } @else {
+        <input
+          [ngModel]="filter()"
+          (ngModelChange)="filter.set($event)"
+          [placeholder]="filterPlaceholder()"
+          (keyup.enter)="searchRequested.emit()"
+          [attr.aria-label]="filterLabel()"
+        />
+      }
+      <button class="secondary" (click)="searchRequested.emit()">Buscar</button>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <ng-content />
+  </div>
+
+  @if (empty()) {
+    <div class="empty">{{ busy() ? 'Cargando registros...' : 'No hay registros para mostrar.' }}</div>
+  }
+
+  <ng-content select="[sectionFooter]" />
+
+  <div class="pagination">
+    <span>Página {{ page() + 1 }} de {{ totalPages() || 1 }}</span>
+    <div>
+      <button class="secondary" [disabled]="page() === 0 || busy()" (click)="pageChange.emit(page() - 1)">
+        Anterior
+      </button>
+      <button
+        class="secondary"
+        [disabled]="page() + 1 >= totalPages() || busy()"
+        (click)="pageChange.emit(page() + 1)"
+      >
+        Siguiente
+      </button>
+    </div>
+  </div>
+</section>

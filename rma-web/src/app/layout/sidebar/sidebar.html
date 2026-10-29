@@ -1,0 +1,27 @@
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <span class="brand-mark">R</span>
+    <div>
+      <strong>RMA</strong>
+      <small>RULE MANAGER</small>
+    </div>
+  </div>
+
+  <div class="nav-caption">ESPACIO DE TRABAJO</div>
+  <nav aria-label="Navegación principal">
+    @for (item of items(); track item.path) {
+      <a [routerLink]="['/', item.path]" routerLinkActive="active">
+        <span class="nav-icon">
+          @switch (item.path) {
+            @case ('parameters') { <svg lucideLayers [size]="17"></svg> }
+            @case ('requests') { <svg lucideClipboardList [size]="17"></svg> }
+            @case ('values') { <svg lucideDatabase [size]="17"></svg> }
+            @case ('audit') { <svg lucideHistory [size]="17"></svg> }
+          }
+        </span>{{ item.label }}
+      </a>
+    }
+  </nav>
+
+  <div class="sidebar-bottom"><span class="status-dot"></span> Entorno de trabajo</div>
+</aside>
